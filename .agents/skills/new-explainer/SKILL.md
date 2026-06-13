@@ -83,10 +83,16 @@ composing `src/components`. Get a still reading correctly before any motion.
 Render stills and LOOK.
 
 ### 4. Add motion (thin scenes)
-One file per scene: frame-derived `ramp`/`pulseWindow` state into `<Stage/>`.
-Imitate the choreography taste: one focal element, sync = meaning (two surfaces
-change on one event), edges draw on (never retract), pulses absorbed before
-their destination, latched-settle holds (extend-safe for VO), beat-shape
+One file per scene: frame-derived state into `<Stage/>`. **For the common beats,
+import the tuned vocabulary from `src/motion/timing.ts` — do NOT hand-author raw
+`ramp(t, 2.2, 3.6)` numbers.** Those windows were harvested verbatim from the
+exemplar and carry its rhythm by construction: `assembleStagger`, `cameraEase`,
+`traverse`, `edgeHeat`, `chipRing`, `tagGlow`/`tagResolve`, `cellFill`/`cellTint`,
+`selectionPulse`, `scrambleFinish` + `finishTimes`, `settleAt`. Reach for these
+first; the smoothness is in the numbers, and you can't feel-tune them from a
+still. Imitate the taste they encode: one focal element, sync = meaning (two
+surfaces change on one event), edges draw on (never retract), pulses absorbed
+before their destination, latched-settle holds (extend-safe for VO), beat-shape
 variety across scenes.
 
 ### 5. Register + verify
