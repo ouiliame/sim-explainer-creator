@@ -90,7 +90,17 @@ exemplar and carry its rhythm by construction: `assembleStagger`, `cameraEase`,
 `traverse`, `edgeHeat`, `chipRing`, `tagGlow`/`tagResolve`, `cellFill`/`cellTint`,
 `selectionPulse`, `scrambleFinish` + `finishTimes`, `settleAt`. Reach for these
 first; the smoothness is in the numbers, and you can't feel-tune them from a
-still. Imitate the taste they encode: one focal element, sync = meaning (two
+still.
+
+**Assemble scenes: use the coupled grammar, never hand-pick node + edge starts.**
+For the build-up, call `chainAssembly(t)` (linear spine) and `fanAssembly(t, m)`
+(one source → m targets). They return `node(i)` and `edge(i)` already in the
+right relationship: an edge draws and its block lands AT the wire's tip, so **a
+wire is never drawn to a block that doesn't exist yet.** If you instead author a
+block's reveal and its edge's draw as two independent `ramp()`s, you will sooner
+or later put the edge before the block — and a fan's edges will visibly hang in
+empty space for a beat before the targets appear. That bug is un-expressible if
+you spread the helpers' output; express it that way. Imitate the taste they encode: one focal element, sync = meaning (two
 surfaces change on one event), edges draw on (never retract), pulses absorbed
 before their destination, latched-settle holds (extend-safe for VO), beat-shape
 variety across scenes.
@@ -117,6 +127,15 @@ and re-render. Audio is subordinate to visuals and re-timed to them.
 - State in product vocabulary (rings/dims/tints), never a state word on screen.
 - **Outputs only in real surfaces** (`OutputBundle` tree / a downstream-row
   resolution / the tag dropdown) — never floating chips.
+- **A written cell is tinted by the table, not by a div over it.** Use
+  `SimTable`'s `cellTint={(c,r) => r===newRow ? {kind:"output", strength} : null}`
+  (strength = the decaying `cellTint(t, start)` from timing.ts). **If you find
+  yourself absolutely-positioning a colored rectangle on top of a table to fake a
+  highlight, you failed** — it re-derives the cell geometry by hand and drifts.
+  The tint belongs inside the grid cell.
+- **An edge never precedes its block.** Build assemble scenes with
+  `chainAssembly`/`fanAssembly` so every wire lands on an existing (or
+  simultaneously-appearing) block; no wire hangs in empty space.
 - **Sim is not realtime** — a surface (table/board/log) changes ONLY when a
   block writes to it. No ambient ticking, no self-updating numbers.
 - **Show the mechanism completely** — every effect has its drawn cause (a table

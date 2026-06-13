@@ -39,6 +39,8 @@ failures, and they're all eliminable.
 | Board fills with no `Update Board` block | "is there a write block in the lane?" | TRUTH | `SimTable` cell-fill is driven by an `onWrite={blockRun}` event sourced from a Table block's run beat. **No write block → no write event → the cell cannot fill.** Effect-without-cause is hard to express; a lint backstops it. |
 | Odds tick "live" every frame | "should the numbers animate ambiently?" | TRUTH | `SimTable` cell values are **pure functions of discrete write events** — the component exposes no `useCurrentFrame()` value hook. Ambient ticking is unrepresentable. |
 | Flat/wrong choreography timing | "every `ramp(start,end)` window, sync offset, hold length" | TASTE | Not fully eliminable. Raise the level: `runBeats(t)` / `assembleStagger()` / `cameraMove()` bake the canonical timing; the agent picks a *start time*, not six windows. Residual ("which beats, what order") stays prompt. |
+| Assemble draws every edge, THEN every block — wires hang in empty space (fan especially) | "what time does each block reveal, and separately, what time does each edge draw?" | TRUTH | `chainAssembly(t)` / `fanAssembly(t, m)` return `node(i)` **and** `edge(i)` from one call, with the edge coupled to land on its block. Two independent `ramp()`s — the thing that lets an edge precede its target — are no longer how you express assembly. |
+| Written row faked with a colored `<div>` over the table (drifting, mis-aligned, selection-looking) | "where exactly is that cell, and how strong is the green?" | TRUTH (geometry) | `SimTable.cellTint(c,r) → {kind,strength}` paints the tint **inside the cell**, clipped and aligned by construction, decaying to the resting residue. There is no cell geometry left for the agent to re-derive; an overlay div is never the path of least resistance. |
 
 ## What "retard-proof component" means concretely
 
@@ -60,6 +62,20 @@ violate:
 The test for any new component: *list the ways a weak model could misuse it. If
 the misuse is a product-truth violation, redesign the API so it can't compile.
 If it's taste, bake a default and document the one knob.*
+
+### The exemplar inherits its own mistakes (show-don't-tell cuts both ways)
+
+The write-tint and the assembly-order failures were both **faithful copies of the
+gold's own code**, not inventions. market-desk hand-positioned an overlay div for
+the written cell and hand-authored separate node/edge ramps — and because the
+imitator copies the exemplar's *code* over the skill's *prose*, it copied the
+exact non-retard-proof move, then got the magic offsets and the edge/block order
+subtly wrong. **A pattern that's only safe because the gold happened to measure it
+right is not a constraint — it's a landmine the next agent steps on.** So when you
+harden a primitive, you must also **refactor the exemplar to use it**, or the
+annotation teaches one thing while the code demonstrates another and the code
+wins. Fixing the component is half the job; making the gold *show* the safe path
+is the other half.
 
 ## The residual (what stays prompt-level)
 

@@ -49,8 +49,19 @@ type Props = {
 	cellOpacity?: (col: number, row: number) => number;
 	colHeaderHighlight?: (col: number) => number;
 	colOpacity?: (col: number) => number;
-	/** Subtle teaching tint, styled like the product's selection tint. */
-	cellTint?: (col: number, row: number) => "input" | "output" | null;
+	/**
+	 * Provenance tint on a cell, rendered INSIDE the grid cell (clipped + aligned
+	 * by construction — never hand-position an overlay div over the table).
+	 *   - `"input"` / `"output"` → the static resting provenance tint.
+	 *   - `{kind, strength}` → an ANIMATED write-tint at 0..1 strength: pass the
+	 *     decaying `cellTint(t, start)` from motion/timing.ts to make a written
+	 *     row pulse green then settle to its residue. This is the ONLY sanctioned
+	 *     way to tint a just-written row.
+	 */
+	cellTint?: (
+		col: number,
+		row: number,
+	) => "input" | "output" | {kind: "input" | "output"; strength: number} | null;
 	/**
 	 * Opacity of the cell's TEXT only (grid chrome unaffected) — for value
 	 * reveals and dip-swaps inside cells. Combine with a text switch at 0 for
@@ -59,9 +70,25 @@ type Props = {
 	cellTextOpacity?: (col: number, row: number) => number;
 };
 
-const TINT_BG: Record<"input" | "output", string> = {
-	input: "rgba(51,180,255,0.07)",
-	output: "rgba(51,196,130,0.08)",
+const TINT_RGB: Record<"input" | "output", string> = {
+	input: "51,180,255",
+	output: "51,196,130",
+};
+// Resting alpha (the enum path) vs. peak alpha of a fresh write (the animated
+// path). A decaying strength → residue 0.35 lands the write tint right back at
+// the resting value (0.22×0.35 ≈ 0.077), so a written cell settles into the
+// provenance look with no seam.
+const TINT_REST: Record<"input" | "output", number> = {input: 0.07, output: 0.08};
+const TINT_PEAK: Record<"input" | "output", number> = {input: 0.16, output: 0.22};
+
+const tintColor = (
+	v: "input" | "output" | {kind: "input" | "output"; strength: number} | null,
+): string | undefined => {
+	if (!v) return undefined;
+	if (typeof v === "string") return `rgba(${TINT_RGB[v]},${TINT_REST[v]})`;
+	const s = Math.max(0, Math.min(1, v.strength));
+	if (s <= 0) return undefined;
+	return `rgba(${TINT_RGB[v.kind]},${(TINT_PEAK[v.kind] * s).toFixed(4)})`;
 };
 
 export const SimTable: React.FC<Props> = ({
@@ -163,7 +190,7 @@ export const SimTable: React.FC<Props> = ({
 											style={{
 												opacity: op,
 												position: "relative",
-												backgroundColor: hi > 0.5 ? undefined : tint ? TINT_BG[tint] : undefined,
+												backgroundColor: hi > 0.5 ? undefined : tintColor(tint),
 											}}
 										>
 											<div className={CELL_CONTENT}>

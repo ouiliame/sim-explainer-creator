@@ -90,6 +90,78 @@ export const cameraEase = (t: number, start: number, dur: number = D.camera) =>
 export const assembleStagger = (t: number, i: number, gap: number = D.assembleGap, t0 = 0) =>
 	ramp(t, t0 + i * gap, t0 + i * gap + D.blockReveal, EASING.out);
 
+// ── The assembly grammar: edge and block coupled so a wire can NEVER hang in
+//    empty space ────────────────────────────────────────────────────────────
+//
+// THE RULE this enforces: an edge connects two blocks, so it may not be drawn
+// to a block that does not exist yet. The gold's assembly reads "the wire
+// extends and the block snaps onto its tip" — the block lands WHILE its
+// incoming edge is still drawing toward it. The failure mode (seen when an
+// imitator hand-picks separate `edgeDraw`/`assembleStagger` start times) is
+// drawing ALL the edges first and ALL the blocks second, so every wire hangs in
+// the void for a beat. These helpers couple the two windows in ONE call, so you
+// CANNOT express that bug: you get back `node(i)` and `edge(i)` already in the
+// right relationship; you only spread them onto the rig.
+
+/** Node↔edge breathing gap in the gold's assembly cadence (s). */
+const ASM_GAP = 0.4;
+/** One linear-chain period: reveal → gap → edge → gap (≈2.0s; matches the gold). */
+const ASM_PERIOD = D.blockReveal + ASM_GAP + D.edgeDraw + ASM_GAP;
+
+/**
+ * Flow-order assembly of a LINEAR chain (node0 → edge0 → node1 → edge1 → …).
+ * Call once; spread the results. `edge(i)` (the wire node i→i+1) draws after
+ * node i settles, and node i+1 lands a gap later AT the wire's tip — the edge
+ * leads its destination by construction, and is never left dangling because the
+ * block follows within ~`ASM_GAP`s. Use for the chain spine of an assemble scene.
+ *
+ *   const A = chainAssembly(t);
+ *   <Stage start={{opacity: A.node(0)}} edge1={{progress: A.edge(0)}}
+ *          classify={{opacity: A.node(1)}} edge2={{progress: A.edge(1)}}
+ *          cond={{opacity: A.node(2)}} />
+ */
+export const chainAssembly = (t: number, {t0 = 0}: {t0?: number} = {}) => {
+	const nodeStart = (i: number) => t0 + i * ASM_PERIOD;
+	const edgeStart = (i: number) => nodeStart(i) + D.blockReveal + ASM_GAP;
+	return {
+		node: (i: number) => ramp(t, nodeStart(i), nodeStart(i) + D.blockReveal, EASING.out),
+		edge: (i: number) => ramp(t, edgeStart(i), edgeStart(i) + D.edgeDraw),
+		nodeStart,
+		edgeStart,
+		/** When the n-node chain has fully settled (for sequencing what comes next). */
+		end: (n: number) => nodeStart(n - 1) + D.blockReveal,
+	};
+};
+
+/**
+ * Assembly of a FAN (one source → m targets, e.g. a Condition's branch handles
+ * to m Table blocks). Each lane is its own coupled edge→block pair, staggered by
+ * `laneStride` — so the wire for lane i draws and ITS block lands at the tip
+ * before the rig ever shows all edges at once. This is the fix for the "three
+ * edges drawn into the void, then three blocks" failure: per-lane interleave,
+ * never all-edges-then-all-blocks.
+ *
+ *   const F = fanAssembly(t, BRANCHES.length, {t0: A.end(3) + 0.3});
+ *   lanes[i] = { edge: {progress: F.edge(i)}, tbl: {opacity: F.node(i)} };
+ */
+export const fanAssembly = (
+	t: number,
+	m: number,
+	{t0 = 0, laneStride = 0.5}: {t0?: number; laneStride?: number} = {},
+) => {
+	const edgeStart = (i: number) => t0 + i * laneStride;
+	// The block fades in at the wire's tip while the wire is still ~60% drawn —
+	// the wire visibly lands ON the appearing block. It is never drawn alone.
+	const nodeStart = (i: number) => edgeStart(i) + D.edgeDraw * 0.6;
+	return {
+		edge: (i: number) => ramp(t, edgeStart(i), edgeStart(i) + D.edgeDraw),
+		node: (i: number) => ramp(t, nodeStart(i), nodeStart(i) + D.blockReveal, EASING.out),
+		edgeStart,
+		nodeStart,
+		end: () => nodeStart(m - 1) + D.blockReveal,
+	};
+};
+
 /** The reveal ramp for table row r (content populating into the grid). */
 export const rowReveal = (t: number, r: number, t0 = 1.1) =>
 	ramp(t, t0 + r * D.rowStagger, t0 + r * D.rowStagger + D.blockReveal);

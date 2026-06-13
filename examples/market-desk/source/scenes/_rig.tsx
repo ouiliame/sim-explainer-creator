@@ -17,9 +17,7 @@ import {
 import {PathPulse} from "../../loops/scenes/_rig";
 import {
 	CARD_W,
-	CELL_H,
 	CHAIN_BLOCK_Y,
-	COL_W,
 	CONT_H,
 	CONT_HEADER_H,
 	CONT_W,
@@ -45,8 +43,6 @@ import {
 	TABLE_X,
 	TABLE_Y,
 	cameraTo,
-	cellX,
-	cellY,
 	laneEdge,
 	laneTop,
 	pillEdge,
@@ -608,6 +604,14 @@ export const Stage: React.FC<StageProps> = ({
 				}}
 			>
 				{/* ── the markets table ── */}
+				{/* The green output tint on written cells is the table's OWN
+				    business: `cellTint` renders it inside each grid cell (clipped,
+				    pixel-aligned by construction), ramped by the per-row fill pulse
+				    and decaying to the provenance residue. We never hand-position an
+				    overlay div over the grid — an overlay has to re-derive the cell
+				    geometry and drifts the moment the table reflows. The est/edge/
+				    signal columns carry the fill; the signal column keeps a touch
+				    more (the flagged-signal residue). */}
 				{tableIn > 0 ? (
 					<div style={{position: "absolute", left: TABLE_X, top: TABLE_Y, opacity: tableIn}}>
 						<SimTable
@@ -615,53 +619,18 @@ export const Stage: React.FC<StageProps> = ({
 							rows={rows}
 							cellHighlight={cellHi}
 							cellTextOpacity={textOp}
+							cellTint={(c, r) => {
+								const fill = fillTint ? fillTint(r) : 0;
+								const sig = signalTint ? signalTint(r) : 0;
+								if (c === SIGNAL_COL && Math.max(fill, sig) > 0)
+									return {kind: "output", strength: Math.max(fill, sig)};
+								if ((c === EST_COL || c === EDGE_COL) && fill > 0)
+									return {kind: "output", strength: fill};
+								return null;
+							}}
 						/>
 					</div>
 				) : null}
-
-				{/* Green output tint on written cells (SimTable's own TINT_BG
-				    ramped by the fill pulse, decaying to the provenance
-				    residue); flagged rows keep a stronger signal-cell residue. */}
-				{fillTint
-					? rows.map((_, r) => {
-							const tint = fillTint(r);
-							if (tint <= 0) return null;
-							return (
-								<div
-									key={`tint-${r}`}
-									style={{
-										position: "absolute",
-										left: cellX(EST_COL),
-										top: cellY(r),
-										width: 3 * COL_W,
-										height: CELL_H - 2,
-										backgroundColor: `rgba(51,196,130,${0.22 * tint})`,
-										pointerEvents: "none",
-									}}
-								/>
-							);
-						})
-					: null}
-				{signalTint
-					? rows.map((_, r) => {
-							const tint = signalTint(r);
-							if (tint <= 0) return null;
-							return (
-								<div
-									key={`sig-${r}`}
-									style={{
-										position: "absolute",
-										left: cellX(SIGNAL_COL),
-										top: cellY(r),
-										width: COL_W,
-										height: CELL_H - 2,
-										backgroundColor: `rgba(51,196,130,${0.3 * tint})`,
-										pointerEvents: "none",
-									}}
-								/>
-							);
-						})
-					: null}
 
 				{/* ── outer wires + pulses ── */}
 				<svg
