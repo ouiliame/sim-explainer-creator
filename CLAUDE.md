@@ -116,23 +116,39 @@ examples/           # the compiled few-shot: golden scene source + critiques + t
 _reference/sim/     # product source (submodule)
 ```
 
-## THE ALGORITHM — under reconstruction (the open work)
+## THE METHOD — start here to build
 
-The mechanical substrate above is done. The **generation method** — how a cold
-agent goes topic → concept flow → scene grammar → layout → choreography →
-narration — is being reconstructed by studying the uncompressed agent traces of
-the best original builds (`market-desk` #1, `loops`, `module-5`, the KB build)
-in the source conversation transcript. Until that lands, treat these as TODO:
+To build a video, follow **`.agents/skills/new-explainer/SKILL.md`**. It defines
+the mandatory reading order and the pipeline. The method is anchored on ONE
+fully worked example you read end to end before building:
 
-- `.agents/skills/new-explainer/` — the pipeline skill (intake → script →
-  build → verify → deliver).
-- `.agents/skills/sim-explainer-craft/` — the craft rules + scene grammar +
-  component library reference + case studies (the rejection history).
-- `.agents/skills/narration/` — the gold register + the NEVER list.
+- **`examples/market-desk/`** — the #1-ranked build, taught exhaustively:
+  - `annotated/01..09-*.md` — every scene taught choice-by-choice (the *why*:
+    which component, which props, every timing number derived, every value's
+    source). Read each alongside its `source/scenes/*.tsx`.
+  - `source/` — the actual working code (`script-v1.md`, `layout.ts`, `data.ts`,
+    `scenes/_rig.tsx` + the nine scenes, `narration-v1.md`). The annotations
+    explain; the code shows the exact props. You need both.
+  - `CHOREOGRAPHY.md` — motion taste with literal timing windows.
+  - `opus-reject/` + `MODEL-PAIR-DELTA.md` — the same concept built badly, with
+    the measured failure modes (study to recognize what NOT to do).
+- **`docs/market-desk-teardown.md`** — the algorithm the worked example reveals
+  (4-layer architecture, front-half concept→scene-list, the failure modes).
+- **`docs/constraint-design.md`** — fact vs. taste; why bad design happens.
+
+Still open (the next layers, not yet built):
+
+- `.agents/skills/sim-explainer-craft/` — fuller scene-grammar + case-study
+  reference (today the teardown + the annotations carry this).
+- `.agents/skills/narration/` — the gold register + NEVER list (today inline in
+  new-explainer §6 + VOICEOVER.md).
 - `scripts/compile-context.ts` — assembles the injectable few-shot pack.
 - `critic/` — the synthetic director (LLM-judge seeded from recorded verdicts).
+- the **retard-proof components** — pushing the truth-DOF (container can't
+  overflow, table can't tick) from prose rules into code that won't compile
+  wrong (see `docs/constraint-design.md`).
 
-The method is mined from traces, not invented. Each piece lands by *showing*
+The method is mined from the worked example, not invented. Each piece lands by *showing*
 (real golden code + the trace excerpt that produced it), never by *telling*
 (abstract rules) — because telling is the lossy summary thesis #2 warns about.
 
