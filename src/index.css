@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Sim's dark-theme CSS variables, ported verbatim from
+   apps/sim/app/_styles/globals.css (.dark) so components copied from the
+   product render with their actual styling.
+
+   These are DARK FALLBACKS only — ThemeProvider (src/theme) sets the same
+   variable names per-composition from the active theme, overriding these.
+   Keep this list in sync with THEMED in src/theme/palettes.ts. */
+:root {
+	--bg: #1b1b1b;
+	--surface-active: #2c2c2c;
+	--border-muted: #424242;
+	--text-placeholder: #8d8d8d;
+	--brand-hover: #802fff;
+	--brand-soft: rgba(112, 31, 252, 0.18);
+	--chip-bg: #2a2a2a;
+	--chip-text: #cdcdcd;
+	--surface-1: #1e1e1e;
+	--surface-2: #232323;
+	--surface-3: #242424;
+	--surface-4: #292929;
+	--surface-5: #363636;
+	--surface-6: #454545;
+	--surface-7: #505050;
+	--border: #333333;
+	--border-1: #3d3d3d;
+	--divider: #393939;
+	--workflow-edge: #454545;
+	--text-primary: #e6e6e6;
+	--text-secondary: #cccccc;
+	--text-tertiary: #b3b3b3;
+	--text-muted: #787878;
+	--text-subtle: #7d7d7d;
+	--text-body: #cdcdcd;
+	--text-icon: #939393;
+	--brand: #701ffc;
+	--brand-secondary: #33b4ff;
+	--brand-accent: #33c482;
+	--brand-knowledge: #00b0b0;
+	--selection: #4b83f7;
+	--warning: #ff6600;
+	--error: #f87171;
+	--success: #22c55e;
+}
