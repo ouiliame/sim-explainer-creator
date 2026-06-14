@@ -80,7 +80,14 @@ code.
 ### 3. Build statics first
 Write `layout.ts` (geometry), `data.ts` (content), then the `<Stage/>` rig
 composing `src/components`. Get a still reading correctly before any motion.
-Render stills and LOOK.
+Render stills and LOOK. **Staging is a composition problem** — before placing
+anything, read `examples/_composition/COMPOSITION-DELTA.md` and decide the frame's
+structure: band it (2–3 horizontal bands), no dead quadrants, the mechanism
+connected edge-to-edge, density = more of the real system working (never filler),
+config in real block rows and outputs in real surfaces (never floating on the
+canvas). A sparse, lopsided, disconnected frame is a failure even when every
+component is real — that's the single most common way a technically-correct scene
+still looks like a cheap wireframe.
 
 ### 4. Add motion (thin scenes)
 One file per scene: frame-derived state into `<Stage/>`. **For the common beats,
@@ -120,6 +127,10 @@ and re-render. Audio is subordinate to visuals and re-timed to them.
 
 ## The hard-rules checklist (run on every scene)
 
+- **Composed, not just placed** — the frame is banded, balanced, dense with real
+  surfaces working, and the mechanism connects edge to edge (no dead quadrants, no
+  floating config text or result chips, no stray lines). Test: *could this be a
+  screenshot of the real product mid-run?* (`examples/_composition/COMPOSITION-DELTA.md`.)
 - One set piece; scenes differ only in state props + camera. Nothing relayouts.
 - Composed from `src/components` only. **If you defined a bordered surface
   inside a scene, you failed** — port it or use a shared component.
