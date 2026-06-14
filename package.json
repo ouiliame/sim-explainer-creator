@@ -33,8 +33,8 @@
     "build": "remotionb bundle",
     "upgrade": "remotionb upgrade",
     "lint": "eslint src && tsc",
-    "render": "remotionb render knowledge-base out/knowledge-base.mp4 --scale=2 --crf=16 --codec=h264",
-    "render:1080": "remotionb render knowledge-base out/knowledge-base-1080.mp4 --crf=18 --codec=h264"
+    "setup": "git submodule update --init --depth 1 _reference/sim && bun install",
+    "render": "bun scripts/render.ts"
   },
   "sideEffects": [
     "*.css"

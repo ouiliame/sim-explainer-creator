@@ -130,12 +130,17 @@ Add `{id, Component, totalSeconds, scenes}` to `src/Root.tsx`. Then:
 measuring pixels; `bun scripts/verify-boundaries.ts <id>` (boundaries
 structural-zero). Run the hard-rules checklist below on every scene.
 
-### 6. Narrate last
-Write `narration-v1.md` (one paragraph per scene, gold register: clean
-condensed prose that explains what's on screen; never trailer voice, fragments,
-or "not-X-but-Y" reversals), then
-`bun scripts/vo-sync.ts --comp <id> --narration … --voice M5lSFiV8wa1aYNbadPOy`
-and re-render. Audio is subordinate to visuals and re-timed to them.
+### 6. Narrate last (optional — needs the VO key)
+**Voiceover is additive, not required.** If `ELEVENLABS_API_KEY` is unset, SKIP this
+step — the video is valid silent and the committed music bed still plays. If the key
+is set: write `narration-v1.md` (gold register: clean condensed prose that explains
+what's on screen; **1–2 short sentences per scene** — dense paragraphs balloon the
+runtime to ~3× with dead-air holds; never trailer voice, fragments, or "not-X-but-Y"),
+then `bun scripts/vo-sync.ts --comp <id> --narration … --voice M5lSFiV8wa1aYNbadPOy`
+and re-render. If vo-sync reports total runtime > ~1.5× the visual minimum, trim and
+re-sync. Mount `<ScratchVO compId="<id>" />` + `<BackgroundMusic src="music/soft-explainer-loop.mp3" />`.
+Audio is subordinate to visuals and re-timed to them. Render the final with
+`bun run render <id>`.
 
 ## The hard-rules checklist (run on every scene)
 
