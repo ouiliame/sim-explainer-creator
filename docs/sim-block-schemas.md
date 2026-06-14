@@ -152,7 +152,7 @@ From edit-workflow/`validation.ts` + `types.ts` skipped-item types:
 
 ## `agent` — Agent
 
-- **name:** Agent · **category:** blocks · **bgColor:** `var(--brand)` (Sim brand purple) · **icon:** `AgentIcon`
+- **name:** Agent · **category:** blocks · **bgColor:** `var(--brand)` = **#33c482 (GREEN)**, resolved from the product CSS — NOT purple. (Purple `#6F3DFA` is the Chat trigger, a different block.) · **icon:** `AgentIcon`
 - **trigger?** no · **authType:** API Key (provider key)
 - **bestPractices:** *Prefer using integrations as tools within the agent block over
   separate integration blocks unless complete determinism needed. Response Format should

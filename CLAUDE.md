@@ -94,8 +94,13 @@ every build; the product drifts.
   `apps/sim/blocks/blocks/*.ts`. The registry wins over docs on conflicts.
 - The agents/* docs section + academy live under
   `apps/docs/content/docs/en/`.
-- Known drift to carry: Agent chip is `var(--brand-agent)` (#701ffc dark /
-  #6f3dfa light), NOT the stale docs green #33C482; Start is `#34B5FF`.
+- Block colors = the registry `bgColor` resolved against the product CSS. The
+  Agent block is `bgColor: var(--brand)`, and the live product sets
+  `--brand: #33c482` (globals.css) — so **Agent is GREEN #33c482. This is
+  current and correct; do NOT "fix" it to purple.** The purple `#6F3DFA` is the
+  **Chat trigger** block (a different block) — don't conflate the two. Start is
+  `#2FB3FF`. When in doubt, read the block's `bgColor` in the registry and
+  resolve the CSS var, never trust memory of a color.
 
 ```bash
 git submodule update --init --depth 1 _reference/sim   # first checkout
