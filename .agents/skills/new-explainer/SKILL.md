@@ -68,6 +68,18 @@ concept is which real blocks the topic needs, not a designed diagram. Pick the
 nearest-shaped graded example to borrow the *scene arc* from (don't invent
 structure).
 
+**If this is a USE-CASE explainer (not a mechanics/academy one), the concept must
+EXCITE — read `docs/design-principles-use-cases.md` before locking it.** Show the
+machine *in action*: break the lazy `Start → Agent → Response` line, bias hard
+toward parallel / fan / volume / cascade, and frame every block as a higher-level
+real-world activity (an agent *calling people*, *researching the web at volume*),
+shown via its real surface (`AgentPhone`, `ChatPanel`, the fan) — not a static
+config row. If your first instinct is a thin 3-block chain, push the concept until
+at least one stage fans or loops over real volume. Borrow the arc from the nearest
+*exciting* exemplar (`agent-economy`, `voice-agent`, `outbound-machine`,
+`swe-fleet`), not the calmest one. (Mechanics/academy explainers are the opposite
+register — calm and diagrammatic — and should stay that way.)
+
 ### 2. Lock the script (`src/videos/<slug>/script-v1.md`)
 Use market-desk's `script-v1.md` as the format: the one idea, the macro arc,
 **run economy** (count traversals; prefer one run seen at multiple scales via
