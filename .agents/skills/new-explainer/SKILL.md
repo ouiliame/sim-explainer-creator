@@ -21,18 +21,25 @@ you read each annotation.
 3. **`docs/market-desk-teardown.md`** — the algorithm a complete video reveals:
    the 4-layer code architecture, the front-half (concept → scene list), and
    the failure modes to avoid.
-4. **The worked example, annotation + code together** — for each scene 1→9:
-   - read `examples/market-desk/annotated/0N-<scene>.md` (the teaching), then
-   - read the matching `examples/market-desk/source/scenes/<Scene>.tsx` it
-     describes, plus the shared rig it drives.
-   Also read, as a set: `source/script-v1.md` (the locked plan format),
-   `source/layout.ts` (geometry), `source/data.ts` (content),
-   `source/scenes/_rig.tsx` (the `<Stage/>` set piece), and
-   `examples/market-desk/CHOREOGRAPHY.md` (motion taste with timing windows).
-5. **`src/components/`** — the library you compose from. At minimum know
+4. **The context pack — `context-pack-2026-06-15.md`** (repo root). Read it WHOLE
+   (~165k tokens; do not skim — it is the taste corpus). It compiles the four core
+   annotated exemplars into one read: **market-desk** (the anchor — parallel-fan /
+   the "machine"), **browser-agent** (tool-calls + live browser session),
+   **agent-economy** (multiplicity / volume), **voice-agent** (the "Machine"
+   money-shot: workflow top, live panels, outcomes table) — each taught
+   scene-by-scene (which component, which props, every timing window derived,
+   every value's source). This is the *why* (the annotation half).
+5. **The code half** — the pack is annotations only; now read the SOURCE so you see
+   *exactly how*. Read `examples/market-desk/source/*` as the reference build
+   (`script-v1.md` locked-plan format, `layout.ts` geometry, `data.ts` content,
+   `scenes/_rig.tsx` the `<Stage/>` set piece, the scene files) AND the
+   `source/` of your nearest-shaped exemplar (whichever of the four — or another
+   in `examples/` — matches your topic's shape). Annotations explain *why*; source
+   shows *how*; you need both.
+6. **`src/components/`** — the library you compose from. At minimum know
    `SimBlock`/`SimEdgePath`, `SimTable`, `OutputBundle`, `ChatPanel`, and the
    data-motion set (`WirePulse`, `ResolvedTag`, `DipSwap`, `Tag`, `CanvasDots`).
-6. **Product truth** — `_reference/sim` (submodule). The block registry
+7. **Product truth** — `_reference/sim` (submodule). The block registry
    (`apps/sim/blocks/blocks/*.ts`) and the docs' authored examples
    (`apps/docs/components/workflow-preview/examples.ts`) are where every
    on-screen value and color comes from.
