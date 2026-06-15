@@ -21,14 +21,21 @@ you read each annotation.
 3. **`docs/market-desk-teardown.md`** — the algorithm a complete video reveals:
    the 4-layer code architecture, the front-half (concept → scene list), and
    the failure modes to avoid.
-4. **The context pack — `context-pack-2026-06-15.md`** (repo root). Read it WHOLE
-   (~165k tokens; do not skim — it is the taste corpus). It compiles the four core
-   annotated exemplars into one read: **market-desk** (the anchor — parallel-fan /
-   the "machine"), **browser-agent** (tool-calls + live browser session),
-   **agent-economy** (multiplicity / volume), **voice-agent** (the "Machine"
-   money-shot: workflow top, live panels, outcomes table) — each taught
-   scene-by-scene (which component, which props, every timing window derived,
-   every value's source). This is the *why* (the annotation half).
+4. **The context pack — `context-pack-2026-06-15.md`** (repo root). Read it WHOLE —
+   it is the taste corpus (~240k tokens / ~16,800 lines). **The Read tool caps at
+   25k tokens (≈1000 dense lines of this pack), so page it in ≤1000-line windows:
+   Read with `offset` 0, 1000, 2000, … 16000 until you've read all of it.** Do NOT
+   skim or stop after the first chunk. Two parts:
+   - **Part 1 — CORE PATTERNS** (the distinctive, reusable *moves*): subworkflows'
+     fold/unfold, custom-tools' editor-anatomy + capability-lands, loops' container
+     Loop-vs-Parallel contrast — taught in full; then pattern cards for branching
+     (the fork: rule vs model decider), logs (run record + backward trace), agents
+     (the ChatPanel interior), knowledge-base (chunk→retrieve→ground), tables (queue
+     ↔ record, write-back). Read this for **what move to reach for**.
+   - **Part 2 — DECISION-STYLE EXEMPLARS** (market-desk, browser-agent, agent-economy,
+     voice-agent), each taught scene-by-scene. Read this for **how to compose the
+     moves with taste**.
+   This is the *why* (the annotation half).
 5. **The code half** — the pack is annotations only; now read the SOURCE so you see
    *exactly how*. Read `examples/market-desk/source/*` as the reference build
    (`script-v1.md` locked-plan format, `layout.ts` geometry, `data.ts` content,
