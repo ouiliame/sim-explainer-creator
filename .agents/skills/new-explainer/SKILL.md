@@ -21,21 +21,31 @@ you read each annotation.
 3. **`docs/market-desk-teardown.md`** — the algorithm a complete video reveals:
    the 4-layer code architecture, the front-half (concept → scene list), and
    the failure modes to avoid.
-4. **The context pack — `context-pack-2026-06-15.md`** (repo root). Read it WHOLE —
-   it is the taste corpus (~240k tokens / ~16,800 lines). **The Read tool caps at
-   25k tokens (≈1000 dense lines of this pack), so page it in ≤1000-line windows:
-   Read with `offset` 0, 1000, 2000, … 16000 until you've read all of it.** Do NOT
-   skim or stop after the first chunk. Two parts:
-   - **Part 1 — CORE PATTERNS** (the distinctive, reusable *moves*): subworkflows'
-     fold/unfold, custom-tools' editor-anatomy + capability-lands, loops' container
-     Loop-vs-Parallel contrast — taught in full; then pattern cards for branching
-     (the fork: rule vs model decider), logs (run record + backward trace), agents
-     (the ChatPanel interior), knowledge-base (chunk→retrieve→ground), tables (queue
-     ↔ record, write-back). Read this for **what move to reach for**.
-   - **Part 2 — DECISION-STYLE EXEMPLARS** (market-desk, browser-agent, agent-economy,
-     voice-agent), each taught scene-by-scene. Read this for **how to compose the
-     moves with taste**.
-   This is the *why* (the annotation half).
+4. **The context pack — read the tier the director gave you, WHOLE.** The pack is the
+   taste corpus, shipped at two context levels. **The director picks the level; you do
+   not.** If the invocation names a level, use exactly that file. If none was named,
+   default to `context-pack-medium.md` and say so. (A/B-validated 2026-06-15; the old
+   `small`/`xhigh` tiers are retired.)
+   - **`context-pack-medium.md`** (~174k tokens / ~11,800 lines) — **the default.** The
+     four decision-style golds (market-desk, browser-agent, agent-economy, voice-agent)
+     taught scene-by-scene: composition, run economy, the EXCITE register, and exit-state
+     continuity (one run carried across freeze-cuts). This is *how to compose the moves
+     with taste* — right for almost every use-case / hero video. Page it `offset` 0,
+     1000, … 11000.
+   - **`context-pack-high.md`** (~244k tokens / ~16,800 lines) — **use when the video's
+     POINT is a specific mechanic** (a loop, a subworkflow, custom tools, branching).
+     Prepends PART 1 — CORE PATTERNS: the academy-derived moves (subworkflows' fold/
+     unfold, custom-tools' editor anatomy, loops' Loop-vs-Parallel contrast, + cards for
+     branching/logs/agents/knowledge-base/tables) taught in full, THEN the same four
+     golds. The golds are all fan/parallel-shaped, so golds-only (medium) can mis-draw a
+     sequential loop as a Parallel fan — high's CORE PATTERNS are what keep that mechanic
+     honest. Page it `offset` 0, 1000, … 16000. Do NOT skim or stop after the first chunk.
+   **The Read tool caps at 25k tokens (≈1000 dense lines), so always page in ≤1000-line
+   windows** — never one call. Read your tier in full; do NOT stop after the first chunk.
+   `high` is two parts (PART 1 — CORE PATTERNS, then PART 2 — DECISION-STYLE EXEMPLARS);
+   `medium` is the exemplars only. Read CORE PATTERNS for **what move to reach for**, the
+   exemplars for **how to compose the moves with taste**. This is the *why* (the
+   annotation half).
 5. **The code half** — the pack is annotations only; now read the SOURCE so you see
    *exactly how*. Read `examples/market-desk/source/*` as the reference build
    (`script-v1.md` locked-plan format, `layout.ts` geometry, `data.ts` content,
