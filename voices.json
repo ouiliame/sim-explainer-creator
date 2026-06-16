@@ -1,0 +1,8 @@
+{
+  "default": "QRGnSWaTwVtMYh87riV0",
+  "voices": {
+    "william": "QRGnSWaTwVtMYh87riV0",
+    "jony": "M5lSFiV8wa1aYNbadPOy"
+  },
+  "_note": "ElevenLabs voice IDs. Pass to vo-sync via --voice <id>. 'william' is the series default; 'jony' (M5lS) was the prior canon. Add new voices here as name -> id."
+}
