@@ -188,6 +188,18 @@ Audio is subordinate to visuals and re-timed to them. Render the final with
 - **An edge never precedes its block.** Build assemble scenes with
   `chainAssembly`/`fanAssembly` so every wire lands on an existing (or
   simultaneously-appearing) block; no wire hangs in empty space.
+- **Legal left-to-right DAG only — never a tree, never top-down.** A Sim workflow
+  flows strictly left→right: every edge leaves a block's **right** output handle and
+  enters the next block's **left** input handle. Blocks NEVER connect top-down/bottom-up
+  or into another block's top/bottom edge. A feeder block (e.g. a Knowledge search an
+  Agent uses) sits to its **LEFT** and wires right→left — never stacked above with a
+  vertical wire. Parallel branches fan out vertically from a shared upstream right-handle
+  and rejoin a shared downstream left-handle (still all left/right handles). **Never add a
+  block or edge for visual density** — every block and wire must belong to ONE legal,
+  runnable topology, cleanly laid out. *"More complex / more ambitious" = a bigger LEGAL
+  workflow* (more Conditions/branches/Agents/nested Loops), never decorative connections.
+  If it can't be laid out as a clean left-to-right DAG, the topology is wrong — fix the
+  topology, don't fake the wire. (Real legal layouts: `workflows-intro`/`market-desk` source.)
 - **Sim is not realtime** — a surface (table/board/log) changes ONLY when a
   block writes to it. No ambient ticking, no self-updating numbers.
 - **Show the mechanism completely** — every effect has its drawn cause (a table
